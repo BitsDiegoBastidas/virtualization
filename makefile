@@ -3,7 +3,7 @@ SERVER_DIR=/usr/share/nginx/html
 vagrant.start: vagrant.init execute.composer config.database create.database import.database
 	cd ./virtualizacion/vagrant && vagrant ssh
 vagrant.init:
-	vagrant up
+	cd ./virtualizacion/vagrant && vagrant up
 execute.composer:
 	@echo "======DELETE COMPOSER.LOCK==========="
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd $(SERVER_DIR) && rm -rf composer.lock"
@@ -17,7 +17,7 @@ execute.composer:
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd $(SERVER_DIR) && composer update bits/* -n "
 	# @echo $(var)
 config.database:
-	vagrant ssh -- "cd && sudo systemctl stop mysqld"
+	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && sudo systemctl stop mysqld"
 	@echo "=================================="
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && sudo systemctl set-environment MYSQLD_OPTS="--skip-grant-tables""
 	@echo "=================================="
