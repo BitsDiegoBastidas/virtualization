@@ -3,7 +3,7 @@ SERVER_DIR=/usr/share/nginx/html
 vagrant.start: vagrant.init execute.composer config.database create.database import.database
 	cd ./virtualizacion/vagrant && vagrant ssh
 vagrant.init:
-	cd ./virtualizacion/vagrant && vagrant up
+	cd ./virtualizacion/vagrant && PHP_VERSION=$(PHP_VERSION) vagrant up
 execute.composer:
 	@echo "======DELETE COMPOSER.LOCK==========="
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd $(SERVER_DIR) && rm -rf composer.lock"

@@ -1,5 +1,7 @@
 sudo su
-
+echo "=========================="
+echo "PHP VERSION: $1"
+echo "=========================="
 # INSTALL AND CONFIGURE NGINX
 cp /usr/share/nginx/html/virtualizacion/vagrant/box_files/nginx.repo /etc/yum.repos.d/
 yum -y update && yum -y install nginx && yum -y install initscripts
@@ -7,7 +9,7 @@ cp /usr/share/nginx/html/virtualizacion/vagrant/box_files/default.conf /etc/ngin
 
 # INSTALL AND CONFIGURE PHP
 yum install gcc-c++ zlib-devel amazon-linux-extras -y
-amazon-linux-extras enable php7.4 && amazon-linux-extras install php7.4 -y
+amazon-linux-extras enable $1 && amazon-linux-extras install $1 -y
 yum -y install php php-cli php-json php-xml php-opcache php-fpm php-intl php-mbstring gd gd-devel php-gd php-zip wget unzip
 systemctl start nginx && systemctl enable nginx.service && systemctl enable php-fpm.service
 
