@@ -32,6 +32,25 @@ import.database:
 render.assets:
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance css.preprocess 0"
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance js.preprocess 0"
-
+#############################
+##########DOCKER#############
+#############################
+docker.start: docker.init docker.composer docker.database
+	cd ./virtualizacion/docker && docker exec -it oneapp_bo_project bash
+docker.init:
+	cd ./virtualizacion/docker && docker compose up -d
+docker.composer:
+	docker exec -it oneapp_bo_project rm -rf composer.lock
+	docker exec -it oneapp_bo_project composer clear-cache
+	docker exec -it oneapp_bo_project composer config -a -g http-basic.gitlab.tigocloud.net '$(username)' '$(pass)'
+	docker exec -it oneapp_bo_project composer install -n --prefer-source
+	docker exec -it oneapp_bo_project composer update bits/* -n
+docker.database:
+	docker cp ./virtualizacion/database/db.mysql oneapp_bo_db:/var/lib
+	@echo "==============================================="
+	docker exec -it oneapp_bo_db pwd
+	docker exec -it oneapp_bo_db ls
+	@echo "==============================================="
+	docker exec -i oneapp_bo_db bash -l -c "mysql -uroot -p12345678 oneapp_bo < db.mysql"
 
 

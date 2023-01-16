@@ -1,7 +1,7 @@
 version: '3'
 services:
   db_bo:
-    container_name: oneapp_bo
+    container_name: oneapp_bo_db
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
@@ -10,9 +10,7 @@ services:
       - oneapp_bo:/var/lib/mysql
     ports:
       - "3307:3306"
-    networks:
-      bo_net:
-        ipv4_address: 10.5.0.5
+    working_dir: /var/lib
   oneapp_bo:
     container_name: oneapp_bo_project
     depends_on:
@@ -22,18 +20,9 @@ services:
     image: oneapp_bo_project
     build: ./image_files/
     privileged: true
+    working_dir: /usr/share/nginx/html
     ports:
       - "8081:80"
-    networks:
-      bo_net:
-        ipv4_address: 10.5.0.6
     command: /usr/sbin/init && systemctl restart php-fpm.service && systemctl restart nginx.service
-networks:
-  bo_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/16
-          gateway: 10.5.0.1
 volumes:
   oneapp_bo:
