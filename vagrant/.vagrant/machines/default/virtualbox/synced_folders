@@ -1,0 +1,1 @@
+{"virtualbox":{"/usr/share/nginx/html/":{"guestpath":"/usr/share/nginx/html","hostpath":"/Users/diegobastidas/proyectos/vagrant/oneapp_bo","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/diegobastidas/proyectos/vagrant/oneapp_bo/virtualizacion/vagrant","disabled":false,"__vagrantfile":true}}}
