@@ -3,9 +3,9 @@ echo "=========================="
 echo "PHP VERSION: $1"
 echo "=========================="
 # INSTALL AND CONFIGURE NGINX
-cp /usr/share/nginx/html/virtualizacion/vagrant/box_files/nginx.repo /etc/yum.repos.d/
+cp /usr/share/nginx/html/virtualization/vagrant/box_files/nginx.repo /etc/yum.repos.d/
 yum -y update && yum -y install nginx && yum -y install initscripts
-cp /usr/share/nginx/html/virtualizacion/vagrant/box_files/default.conf /etc/nginx/conf.d/
+cp /usr/share/nginx/html/virtualization/vagrant/box_files/default.conf /etc/nginx/conf.d/
 
 # INSTALL AND CONFIGURE PHP
 yum install gcc-c++ zlib-devel amazon-linux-extras -y
