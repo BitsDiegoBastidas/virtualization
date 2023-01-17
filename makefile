@@ -27,7 +27,7 @@ create.database:
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && mysql -uroot -e 'create database $(database_name)'"
 import.database:
 	@echo "=== IMPORTANDO  $(database_name) POR FAVOR, ESPERE ===="
-	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && cd $(SERVER_DIR)/virtualizacion/vagrant/database && mysql -u root $(database_name) < db.mysql"
+	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && cd $(SERVER_DIR)/virtualizacion/database && mysql -u root $(database_name) < db.mysql"
 	@echo "=== base de datos $(database_name) Importada correctamente! ===="
 render.assets:
 	cd ./virtualizacion/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance css.preprocess 0"
