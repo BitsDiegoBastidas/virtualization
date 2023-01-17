@@ -18,7 +18,10 @@ services:
     volumes:
       - ../../:/usr/share/nginx/html
     image: oneapp_bo_project
-    build: ./image_files/
+    build:
+      context: ./image_files/
+      args:
+        - PHP_VERSION
     privileged: true
     working_dir: /usr/share/nginx/html
     ports:

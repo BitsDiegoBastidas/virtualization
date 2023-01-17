@@ -38,6 +38,7 @@ render.assets:
 docker.start: docker.init docker.composer docker.database
 	cd ./virtualizacion/docker && docker exec -it oneapp_bo_project bash
 docker.init:
+	cd ./virtualizacion/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)"
 	cd ./virtualizacion/docker && docker compose up -d
 docker.composer:
 	docker exec -it oneapp_bo_project rm -rf composer.lock
@@ -52,5 +53,4 @@ docker.database:
 	docker exec -it oneapp_bo_db ls
 	@echo "==============================================="
 	docker exec -i oneapp_bo_db bash -l -c "mysql -uroot -p12345678 oneapp_bo < db.mysql"
-
 

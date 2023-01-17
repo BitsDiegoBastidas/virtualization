@@ -1,11 +1,13 @@
 FROM amazonlinux:latest
+ARG PHP_VERSION
 # Install and configure Nginx
 COPY nginx.repo /etc/yum.repos.d/
 RUN yum -y update && yum -y install nginx && yum -y install initscripts
 COPY default.conf /etc/nginx/conf.d/
 # INSTALL AND CONFIGURE PHP
+RUN echo "Install PHP VERSION: ${PHP_VERSION}"
 RUN yum install gcc-c++ zlib-devel amazon-linux-extras -y
-RUN amazon-linux-extras enable php7.4 && amazon-linux-extras install php7.4 -y
+RUN amazon-linux-extras enable ${PHP_VERSION} && amazon-linux-extras install ${PHP_VERSION} -y
 RUN yum -y install php php-cli php-json php-xml php-opcache php-fpm php-intl php-mbstring gd gd-devel php-gd php-zip wget unzip
 RUN systemctl enable nginx.service && systemctl enable php-fpm.service
 #RUN systemctl enable nginx.service && systemctl enable php-fpm.service && systemctl restart php-fpm.service && systemctl restart nginx.service
