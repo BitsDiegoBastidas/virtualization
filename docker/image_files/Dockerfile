@@ -34,3 +34,8 @@ RUN cd /usr/local/src/drush && composer install
 RUN cd /tmp && curl https://github.com/hechoendrupal/drupal-console-launcher/releases/download/1.9.7/drupal.phar -L -o drupal.phar  \
     && mv drupal.phar /usr/local/bin/drupal \
     && chmod +x /usr/local/bin/drupal
+
+# FIX PHP-FPM
+COPY www.conf /etc/php-fpm.d
+RUN sed -i 's/listen.acl_users/;listen.acl_users/g' /etc/php-fpm.d/www.conf
+RUN sed -i 's/listen.acl_groups/;listen.acl_groups/g' /etc/php-fpm.d/www.conf

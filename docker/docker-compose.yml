@@ -26,6 +26,6 @@ services:
     working_dir: /usr/share/nginx/html
     ports:
       - "8081:80"
-    command: /usr/sbin/init && systemctl restart php-fpm.service && systemctl restart nginx.service
+    command: /usr/sbin/init && systemctl restart php-fpm && systemctl restart php-fpm.service && systemctl restart nginx.service
 volumes:
   oneapp_bo:

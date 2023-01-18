@@ -35,7 +35,7 @@ render.assets:
 #############################
 ##########DOCKER#############
 #############################
-docker.start: docker.init docker.composer docker.database
+docker.start: docker.init docker.database
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
 	cd ./virtualization/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)"
