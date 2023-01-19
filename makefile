@@ -54,3 +54,17 @@ docker.database:
 	@echo "==============================================="
 	docker exec -i oneapp_bo_db bash -l -c "mysql -uroot -p12345678 oneapp_bo < db.mysql"
 
+docker.up:
+	cd ./virtualization/docker && docker compose up -d
+docker.end:
+	cd ./virtualization/docker && docker compose down
+docker.restart:
+	cd ./virtualization/docker && docker compose restart
+docker.it.project:
+	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
+docker.it.bd:
+	cd ./virtualization/docker && docker exec -it oneapp_bo_db bash
+docker.destroy:
+	docker rm -f oneapp_bo_db oneapp_bo_project
+	docker rmi oneapp_bo_project:latest
+	docker volume rm docker_oneapp_bo
