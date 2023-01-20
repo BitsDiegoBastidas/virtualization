@@ -1,6 +1,6 @@
 SERVER_DIR=/usr/share/nginx/html
 
-vagrant.start: vagrant.init execute.composer config.database create.database import.database
+vagrant.start: vagrant.init execute.composer config.database create.database import.database execute.shells
 	cd ./virtualization/vagrant && vagrant ssh
 vagrant.init:
 	cd ./virtualization/vagrant && PHP_VERSION=$(PHP_VERSION) vagrant up
@@ -29,13 +29,16 @@ import.database:
 	@echo "=== IMPORTANDO  $(DATABASE_NAME) POR FAVOR, ESPERE ===="
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && cd $(SERVER_DIR)/virtualization/database && mysql -u root $(DATABASE_NAME) < db.mysql"
 	@echo "=== base de datos $(DATABASE_NAME) Importada correctamente! ===="
+execute.shells:
+	@echo "=== EJECUTANDO SHELL SCRIPTING ==="
+	cd ./virtualization/vagrant && vagrant ssh -- "cd && cd $(SERVER_DIR)/virtualization/sync_files && bash git_hooks.sh"
 render.assets:
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance css.preprocess 0"
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance js.preprocess 0"
 #############################
 ##########DOCKER#############
 #############################
-docker.start: docker.init docker.composer docker.database
+docker.start: docker.init docker.composer docker.database docker.shells
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
 	cd ./virtualization/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)"
@@ -53,7 +56,8 @@ docker.database:
 	docker exec -it oneapp_bo_db ls
 	@echo "==============================================="
 	docker exec -i oneapp_bo_db bash -l -c "mysql -uroot -p12345678 oneapp_bo < db.mysql"
-
+docker.shells:
+	docker exec -it oneapp_bo_project pwd && cd virtualization/sync_files && bash git_hooks.sh
 docker.up:
 	cd ./virtualization/docker && docker compose up -d
 docker.end:

@@ -1,0 +1,27 @@
+#!/bin/sh
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+NORMAL=$(tput sgr0)
+success=true
+echo "======================== Permission Validation ========================"
+for line in `git diff --cached --name-only`; do
+  FILE="$(git rev-parse --show-toplevel)/$line"
+  if [ -f "$FILE" ]; then
+    file_permission=$(find "$FILE" -printf "%m \n")
+    if [ $file_permission -eq  664 ]; then # https://shreyalmandot.in/blog/drupal-file-permissions
+      echo "${GREEN} $FILE: $file_permission -> PERMISSION OK ${NORMAL}"
+    else
+      echo "${RED} $FILE: $file_permission -> PLEASE, CHANGE THIS PERMISSION TO 664 TO ALLOW COMMIT IT ${NORMAL}"
+      success=false
+    fi
+  else
+    echo "$FILE Fue eliminado o no existe"
+  fi
+done
+echo "======================== Permission Validation ========================"
+if [ "$success" = true ]; then
+  exit 0
+else
+  echo "${RED} YOU HAVE FILES WITH INCORRECT PERMISSIONS, PLEASE READ THE LOGS ABOVE AND FOLLOW THE STEPS ${NORMAL}"
+  exit 2
+fi
