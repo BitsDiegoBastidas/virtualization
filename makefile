@@ -57,7 +57,7 @@ docker.database:
 	@echo "==============================================="
 	docker exec -i oneapp_bo_db bash -l -c "mysql -uroot -p12345678 oneapp_bo < db.mysql"
 docker.shells:
-	docker exec -it oneapp_bo_project pwd && cd virtualization/sync_files && bash git_hooks.sh
+	docker exec -u 0 -i oneapp_bo_project bash  -c "whoami; cd virtualization/sync_files; bash git_hooks.sh"
 docker.up:
 	cd ./virtualization/docker && docker compose up -d
 docker.end:

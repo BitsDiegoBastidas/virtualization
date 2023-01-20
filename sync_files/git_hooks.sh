@@ -2,8 +2,11 @@
 # Author: Diego Bastidas
 # Description: copy git_hooks into modules
 
+git config --global --add safe.directory /usr/share/nginx/html
 cd ../../web/modules/custom
+
 proyect_foler=$(git rev-parse --show-toplevel)
+echo $proyect_foler
 GREEN=$(tput setaf 2)
 NORMAL=$(tput sgr0)
 RED=$(tput setaf 1)
