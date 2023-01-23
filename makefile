@@ -35,9 +35,22 @@ execute.shells:
 render.assets:
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance css.preprocess 0"
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && drush -y config-set system.performance js.preprocess 0"
+
+
+vagrant.destroy:
+	cd ./virtualization/vagrant && vagrant halt && vagrant destroy
+
+vagrant.up:
+	cd ./virtualization/vagrant && vagrant up
+vagrant.end:
+	cd ./virtualization/vagrant && vagrant stop
+vagrant.ssh:
+	cd ./virtualization/vagrant && vagrant ssh
+
 #############################
 ##########DOCKER#############
 #############################
+
 docker.start: docker.init docker.composer docker.database docker.shells
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
