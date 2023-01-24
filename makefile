@@ -51,9 +51,10 @@ vagrant.ssh:
 ##########DOCKER#############
 #############################
 
-docker.start: docker.init docker.composer docker.database docker.shells
+docker.start: docker.init docker.composer docker.database docker.shells docker.render
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
+	docker builder prune -f
 	cd ./virtualization/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)"
 	cd ./virtualization/docker && docker compose up -d
 docker.composer:
@@ -85,3 +86,8 @@ docker.destroy:
 	docker rm -f oneapp_bo_db oneapp_bo_project
 	docker rmi oneapp_bo_project:latest
 	docker volume rm docker_oneapp_bo
+docker.render:
+	@echo "==========="
+	@echo "Environment successfully builded... Please, type: 192.168.50.11 into your web browser to render the Drupal Web Site"
+	@echo "==========="
+
