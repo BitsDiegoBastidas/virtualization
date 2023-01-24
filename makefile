@@ -51,7 +51,7 @@ vagrant.ssh:
 ##########DOCKER#############
 #############################
 
-docker.start: docker.init docker.composer docker.database docker.shells docker.render
+docker.start: docker.init docker.composer docker.database docker.shells
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
 	docker builder prune -f
@@ -86,8 +86,8 @@ docker.destroy:
 	docker rm -f oneapp_bo_db oneapp_bo_project
 	docker rmi oneapp_bo_project:latest
 	docker volume rm docker_oneapp_bo
-docker.render:
-	@echo "==========="
-	@echo "Environment successfully builded... Please, type: 192.168.50.11 into your web browser to render the Drupal Web Site"
-	@echo "==========="
+#docker.render:
+#	@echo "==========="
+#	@echo "Environment successfully builded... Please, type: 192.168.50.11 into your web browser to render the Drupal Web Site"
+#	@echo "==========="
 
