@@ -86,6 +86,7 @@ docker.destroy:
 	docker rm -f oneapp_bo_db oneapp_bo_project
 	docker rmi oneapp_bo_project:latest
 	docker volume rm docker_oneapp_bo
+	docker network rm docker_oneapp_bo_net
 docker.render:
 	@echo "==========="
 	@echo "Environment successfully builded... Please, type: 10.5.0.6 into your web browser to render the Drupal Web Site, (If you are in MacOS, type localhost:8081 into your web browser)"
