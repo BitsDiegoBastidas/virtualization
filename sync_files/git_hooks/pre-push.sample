@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# An example hook script to verify what is about to be pushed.  Called by "git
+# push" after it has checked the remote status, but before anything has been
+# pushed.  If this script exits with a non-zero status nothing will be pushed.
+#
+# This hook is called with the following parameters:
+#
+# $1 -- Name of the remote to which the push is being done
+# $2 -- URL to which the push is being done
+#
+# If pushing without using a named remote those arguments will be equal.
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#
+#   <local ref> <local sha1> <remote ref> <remote sha1>
+#
+# This sample shows how to prevent push of commits where the log message starts
+# with "WIP" (work in progress).
+
+currentLocalBranch="$(git rev-parse --abbrev-ref HEAD)"
+validBranchRegex="^(ft|dv|pr|ms)_(arq|c2|c1|c3|ni|co|sv|bo|gt|hn|py|pa)_(uat|prd|us|bug|fix|req|inc|cu)_(cmd|tbos2|sw|omlatam)_[0-9]{1,10}$"
+messageError="The branch name does not comply with the standard defined in the version policy based on the following format: $validBranchRegex. Your commit will be rejected. Please change the branch name to a valid one and try again. Ej. 'ms_ni_us_tbos2_9999' "
+messageExit="Your commit will be successful."
+
+if [[ $currentLocalBranch != "master" && $currentLocalBranch != "develop-qa" && $currentLocalBranch != "develop-bits" && $currentLocalBranch != "develop" ]]
+then
+	if [[ ! $currentLocalBranch =~ $validBranchRegex ]]
+	then
+		echo "$messageError"
+		status=1
+	else
+		echo "$messageExit"
+		status=0
+	fi
+fi
+
+exit $status
+
+# End Script. 

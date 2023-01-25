@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# An example hook script to check the commit log message.
+# Called by "git commit" with one argument, the name of the file
+# that has the commit message.  The hook should exit with non-zero
+# status after issuing an appropriate message if it wants to stop the
+# commit.  The hook is allowed to edit the commit message file.
+#
+# To enable this hook, rename this file to "commit-msg".
+
+# Uncomment the below to add a Signed-off-by line to the message.
+# Doing this in a hook is a bad idea in general, but the prepare-commit-msg
+# hook is more suited to it.
+#
+#
+validBranchRegex="^[a-z 0-9]{10,60} (#(cmd|tbos2|sw|omlatam)_[0-9]{1,10})$"
+messageError="The message name does not comply with the standard defined in the version policy based on the following format: $validBranchRegex. Your commit will be rejected. Please change the message name to a valid one and try again. Ej. 'Mensaje de prueba git hooks #tbos2_9999' "
+messageExit="Your commit will be successful."
+status = 0
+
+if ! grep -iqE "$validBranchRegex" "$1"
+then
+	echo "$messageError"
+	status=1
+else
+	echo "$messageExit"
+	status=0
+fi
+
+exit $status
+
+# End Script. 

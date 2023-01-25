@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+currentLocalBranch="$(git rev-parse --abbrev-ref HEAD)"
+
+userName="$(git config user.name)"
+
+validBranchRegex="^(ft|dv|pr|ms)_(arq|c2|c1|c3|ni|co|sv|bo|gt|hn|py|pa)_(uat|prd|us|bug|fix|req|inc|cu)_(cmd|tbos2|sw|omlatam)_[0-9]{1,10}$"
+
+messageError="The branch name does not comply with the standard defined in the version policy based on the following format: $validBranchRegex. Your commit will be rejected. Please change the branch name to a valid one and try again."
+
+messageExit="Commands executed successfully."
+
+if [[ ! $currentLocalBranch =~ $validBranchRegex ]]
+then
+    echo "$messageError"
+	echo "First hook executed with failure: pre-commit"
+    status=1
+else
+	rootDirectory="$(git rev-parse --show-toplevel)"
+	cd "$rootDirectory"
+	
+	git pull
+	echo "Command 'git pull' execute with exit."
+
+	git fetch --tags
+	echo "Command 'git fetch --tags' execute with exit."
+
+	lastTag="$(git describe --abbrev=0)"
+
+	if [[ -s VersionNumberAnalysis.txt ]]
+	then
+		versionNumber=$(<VersionNumberAnalysis.txt)
+		IFS='.'
+		read -a versionArray <<< "$versionNumber"		
+		lengthArray=${#versionArray[@]}
+		lengthArray=$((lengthArray - 1))
+		lastDigitVersion=${versionArray[$lengthArray]}
+		versionArray[$lengthArray]=""
+		printf -v currentlyVersionNumber ".%s" "${versionArray[@]}"
+		currentlyVersionNumber=${currentlyVersionNumber:1}
+		
+		if [[ $currentlyVersionNumber != $lastTag. ]]
+		then
+			currentlyVersionNumber=$lastTag.
+			lastDigitVersion=0
+		else
+			lastDigitVersion=$((lastDigitVersion+1))
+		fi
+		
+		versionNumber="$currentlyVersionNumber$lastDigitVersion"
+		IFS=' '
+		echo $versionNumber > VersionNumberAnalysis.txt
+	else
+		echo "The file 'VersionNumberAnalysis.txt' is empty, reading the lastet version tag published."
+		
+		echo $lastTag.0 > VersionNumberAnalysis.txt
+		read versionNumber < VersionNumberAnalysis.txt
+	fi
+	
+	git add VersionNumberAnalysis.txt
+
+	echo "sonar.branch.name=$currentLocalBranch" >> sonar-project.properties
+	echo "sonar.projectVersion=$versionNumber | $userName" >> sonar-project.properties
+
+	echo "Running static code analysis for branch $currentLocalBranch"
+	#cmd.exe /c "sonar-scanner" # --For Windows
+	echo "$(/Applications/sonar-scanner/bin/sonar-scanner)" -- For MAC/Linux
+	
+	echo "$messageExit"
+	echo "Firts hook successfully executed: pre-commit"
+    status=0
+	
+	git checkout HEAD -- sonar-project.properties
+fi
+
+exit $status
+
+# -- End Script.

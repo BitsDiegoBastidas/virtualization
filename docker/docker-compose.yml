@@ -10,6 +10,9 @@ services:
       - oneapp_bo:/var/lib/mysql
     ports:
       - "3307:3306"
+    networks:
+      oneapp_bo_net:
+        ipv4_address: 10.5.0.5
     working_dir: /var/lib
   oneapp_bo:
     container_name: oneapp_bo_project
@@ -26,7 +29,16 @@ services:
     working_dir: /usr/share/nginx/html
     ports:
       - "8081:80"
+    networks:
+      oneapp_bo_net:
+        ipv4_address: 10.5.0.6
     command: /usr/sbin/init && systemctl restart php-fpm.service && systemctl restart nginx.service
-
+networks:
+  oneapp_bo_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
 volumes:
   oneapp_bo:
