@@ -45,6 +45,11 @@
             "url": "https://gitlab.bitsamericas.net/oneapp/adf_simple_auth.git"
         },
         {
+            "name": "bits/oneapp_adminimal",
+            "type": "vcs",
+            "url": "https://gitlab.bitsamericas.net/cristian.delacruz/oneapp_adminimal"
+        },
+        {
             "name": "bits/adf_devsecops",
             "type": "vcs",
             "url": "https://gitlab.bitsamericas.net/oneapp/adf_devsecops.git"
@@ -56,6 +61,7 @@
         "bits/adf_simple_auth": "3.0.2",
         "bits/aws_service": "3.0.1",
         "bits/oneapp": "3.0.2",
+        "bits/oneapp_adminimal": "1.0.0",
         "bits/oneapp_convergent": "3.0.9",
         "bits/oneapp_home": "3.0.8",
         "bits/oneapp_mobile": "3.0.10",
