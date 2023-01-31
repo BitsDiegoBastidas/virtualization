@@ -15,7 +15,7 @@ execute.composer:
 	@echo "======CLEAR COMPOSER CACHE:==========="
 	cd ./virtualization/vagrant && vagrant ssh -- "cd && composer clear-cache"
 	@echo "========  COMPOSER AUTH  ============="
-	cd ./virtualization/vagrant && vagrant ssh -- "cd && composer config -a -g http-basic.gitlab.tigocloud.net '$(USERNAME)' '$(PASS)'"
+	cd ./virtualization/vagrant && vagrant ssh -- "cd && composer config -a -g http-basic.gitlab.bitsamericas.net '$(USERNAME)' '$(PASS)'"
 	@echo "=========COMPOSER INSTALL============="
 	cd ./virtualization/vagrant && vagrant ssh -- "cd $(SERVER_DIR) && composer install -n --prefer-source"
 	@echo "=========COMPOSER UPDATE============="
@@ -65,7 +65,7 @@ docker.init:
 docker.composer:
 	docker exec -it oneapp_bo_project rm -rf composer.lock
 	docker exec -it oneapp_bo_project composer clear-cache
-	docker exec -it oneapp_bo_project composer config -a -g http-basic.gitlab.tigocloud.net '$(USERNAME)' '$(PASS)'
+	docker exec -it oneapp_bo_project composer config -a -g http-basic.gitlab.bitsamericas.net '$(USERNAME)' '$(PASS)'
 	docker exec -it oneapp_bo_project composer install -n --prefer-source
 	docker exec -it oneapp_bo_project composer update bits/* -n
 docker.database:

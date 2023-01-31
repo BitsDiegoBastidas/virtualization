@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Contains billing.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function oneapp_mobile_loan_bo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the upselling module.
+    case 'help.page.loan_bo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains features for all oneapp mobile loan bo') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_block_alter().
+ */
+function oneapp_mobile_loan_bo_block_alter(array &$definitions) {
+
+  $definitions['oneapp_mobile_loan_v2_0_loan_data_balance_block']['class'] =
+    'Drupal\oneapp_mobile_loan_bo\Plugin\Block\v2_0\LoanDataBalanceBoBlock';
+
+}
+
+/**
+ * Implements hook_endpoint_alter().
+ */
+function oneapp_mobile_loan_bo_endpoint_alter(array &$definitions) {
+  // Redefine la url del endpoint.
+  $definitions['oneapp_mobile_lending_v2_0_scoring_endpoint']['defaults']['endpoint'] =
+    'https://[endpoint:environment_prefix].api.tigo.com/v1/tigo/mobile/[endpoint:country_iso]/lend/zero_balance/subscribers/[endpoint:prefix_country]{msisdn}';
+}

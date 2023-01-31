@@ -1,0 +1,8 @@
+name: OneApp Convergent Payment Gateway Tigomoney Bo
+type: module
+description: Modulo OneApp Convergente Tigomoney Bo
+package: "OneApp Convergent Bo"
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp_convergent_bo

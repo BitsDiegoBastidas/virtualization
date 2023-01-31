@@ -1,0 +1,11 @@
+name: 'OneApp Convergent Payment Gateway Bo'
+type: module
+description: 'Payment Gateway Convergent Logic for Bo'
+package: 'OneApp Convergent BO'
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp_convergent_bo
+  - oneapp_convergent:oneapp_convergent_payment_gateway
+  - oneapp_convergent_payment_gateway:oneapp_convergent_payment_gateway_invoices
+  - oneapp:oneapp_zendesk

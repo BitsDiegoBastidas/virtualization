@@ -1,0 +1,109 @@
+<?php
+
+use \Drupal\Core\Form\FormStateInterface;
+
+function oneapp_convergent_payment_gateway_bo_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+
+  if ($form_id == 'oneapp_mobile_invoices_payment_gateway_config' || $form_id == 'oneapp_home_invoices_payment_gateway_config') {
+
+    if ($form_id == 'oneapp_mobile_invoices_payment_gateway_config') {
+      $config = \Drupal::config('oneapp.payment_gateway.mobile_invoices.config');
+      $type = 'mobile';
+    }
+    else {
+      $config = \Drupal::config('oneapp.payment_gateway.home_invoices.config');
+      $type = 'home';
+    }
+
+    $group = 'zendesk';
+    $form[$group] = [
+      '#type' => 'details',
+      '#title' => t('Configuraciones zendesk'),
+      '#group' => 'bootstrap',
+      '#weight' => 10,
+    ];
+
+    $form[$group]['subject'] = [
+      '#type' => 'textfield',
+      '#title' => 'Subject',
+      '#default_value' => isset($config->get($group)['subject']) ? $config->get($group)['subject'] : "",
+    ];
+    $form[$group]['tags'] = [
+      '#type' => 'textfield',
+      '#title' => 'tags',
+      '#default_value' => isset($config->get($group)['tags']) ? $config->get($group)['tags'] : "",
+      '#description' => 'Separar por coma',
+    ];
+    $form[$group]['brand_id'] = [
+      '#type' => 'textfield',
+      '#title' => 'Brand id',
+      '#default_value' => isset($config->get($group)['brand_id']) ? $config->get($group)['brand_id'] : "",
+    ];
+    $form[$group]['ticket_form_id'] = [
+      '#type' => 'textfield',
+      '#title' => 'Ticket form id',
+      '#default_value' => isset($config->get($group)['ticket_form_id']) ? $config->get($group)['ticket_form_id'] : "",
+    ];
+    $form[$group]['custom_fields'] = [
+      '#type' => 'textfield',
+      '#title' => 'Cantidad de custom fields',
+      '#default_value' => isset($config->get($group)['custom_fields']) ? $config->get($group)['custom_fields'] : 3,
+    ];
+
+    $customFields = isset($config->get($group)['custom_fields']) ? $config->get($group)['custom_fields'] : 3;
+
+    $customFieldsType = [
+      $type => 'Campos custom ' . $type,
+    ];
+
+    $form[$group]['fields'] = [
+      '#type' => 'details',
+      '#title' => 'Campos custom',
+      '#open' => FALSE,
+      '#description' => 'los valores que vienen del callback deben ir entre {}',
+    ];
+    foreach ($customFieldsType as $key => $title) {
+      $form[$group]['fields'][$key] = [
+        '#type' => 'details',
+        '#title' => $title,
+        '#open' => FALSE,
+      ];
+    }
+    for ($i = 1; $i <= $customFields; ++$i) {
+      foreach ($customFieldsType as $key => $title) {
+        $form[$group]['fields'][$key][$i]['id'] = [
+          '#type' => 'textfield',
+          '#title' => 'Id para el campo #' . $i,
+          '#default_value' => isset($config->get($group)['fields'][$key][$i]['id']) ? $config->get($group)['fields'][$key][$i]['id'] : '',
+          ];
+        $form[$group]['fields'][$key][$i]['value'] = [
+          '#type' => 'textfield',
+          '#title' => 'Value para el campo #' . $i,
+          '#default_value' => isset($config->get($group)['fields'][$key][$i]['value']) ? $config->get($group)['fields'][$key][$i]['value'] : '',
+        ];
+      }
+    }
+
+    $form['#submit'][] = 'oneapp_convergent_payment_gateway_bo_settings_submit';
+    $form['actions']['submit']['#submit'][] = 'oneapp_convergent_payment_gateway_bo_settings_submit';
+
+  }
+}
+
+/**
+ * Custom submit config form for save data.
+ */
+function oneapp_convergent_payment_gateway_bo_settings_submit(&$form, FormStateInterface $form_state) {
+
+  if ($form['#form_id'] == 'oneapp_mobile_invoices_payment_gateway_config') {
+    $type = 'mobile';
+  }
+  else {
+    $type = 'home';
+  }
+  \Drupal::configFactory()->getEditable('oneapp.payment_gateway.' . $type . '_invoices.config')
+    ->set('zendesk', $form_state->getValue('zendesk'))
+    ->save();
+}
+

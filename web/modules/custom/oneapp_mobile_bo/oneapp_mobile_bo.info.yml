@@ -1,0 +1,12 @@
+name: 'ONEAPP Mobile Bo'
+type: module
+description: 'Modulo para sobreescribir algunas funcionalidades de OneApp Mobile Bo'
+package: "OneApp Mobile Bo"
+core: '8.x'
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp:oneapp
+  - oneapp:oneapp_rest
+  - oneapp:oneapp_endpoints
+  - oneapp:adf_block_config
+  - oneapp_mobile

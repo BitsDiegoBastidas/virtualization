@@ -1,0 +1,8 @@
+name: 'ONEAPP Mobile balance management Bo'
+type: module
+description: 'Modulo de transferencia de saldo seguras usando validaciones OTP bo'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_mobile

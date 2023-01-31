@@ -1,0 +1,9 @@
+name: 'ONEAPP Home Services Bo'
+type: module
+description: 'Contains features for all oneapp home services bo'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Home BO"
+dependencies:
+  - oneapp_home
+  - oneapp_home:oneapp_home_services

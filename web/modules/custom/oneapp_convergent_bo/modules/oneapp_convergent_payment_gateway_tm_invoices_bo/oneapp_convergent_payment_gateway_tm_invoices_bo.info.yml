@@ -1,0 +1,13 @@
+name: 'OneApp Convergent Payment Gateway Tigomoney Invoices Bo'
+type: module
+description: 'OneApp Convergent Payment Gateway Tigomoney Invoices Bo'
+package: 'OneApp Convergent BO'
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp_convergent_bo
+  - oneapp_convergent:oneapp_convergent_payment_gateway
+  - oneapp_convergent_payment_gateway:oneapp_convergent_payment_gateway_invoices
+  - oneapp_convergent_payment_gateway_tigomoney:oneapp_convergent_payment_gateway_tm_invoices
+  - oneapp:oneapp_zendesk
+

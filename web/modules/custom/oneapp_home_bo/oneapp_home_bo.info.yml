@@ -1,0 +1,8 @@
+name: Oneapp Home BO
+type: module
+description:  Modulo que sobreescribe algunas funcionalidades Oneapp Home BO
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Home BO"
+dependencies:
+  - oneapp_home

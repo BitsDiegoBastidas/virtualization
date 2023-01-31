@@ -1,0 +1,8 @@
+name: Oneapp Home Scheduling BO
+type: module
+description: Oneapp Home Scheduling BO
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: "OneApp Home BO"
+dependencies:
+  - oneapp_home

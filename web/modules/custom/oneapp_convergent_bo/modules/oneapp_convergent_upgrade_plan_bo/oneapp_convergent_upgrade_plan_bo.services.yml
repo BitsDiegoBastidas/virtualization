@@ -1,0 +1,4 @@
+services:
+  oneapp.convergent.UpgradePlanLogBoModelService:
+    class: Drupal\oneapp_convergent_upgrade_plan_bo\Services\UpgradePlanLogBoModelService
+    arguments: []

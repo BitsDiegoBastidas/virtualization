@@ -1,0 +1,9 @@
+name: 'OneApp Convergent Bolivia'
+type: module
+description: 'Contains features for all oneapp covergent BO'
+package: 'OneApp Convergent BO'
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp_convergent
+  - drupal:queue_ui

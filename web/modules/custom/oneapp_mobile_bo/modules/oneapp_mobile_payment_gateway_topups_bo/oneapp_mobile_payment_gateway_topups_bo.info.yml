@@ -1,0 +1,9 @@
+name: Oneapp Mobile Payment Gateway Topups Bo
+type: module
+description: Modulo Oneapp Mobile Payment Gateway con funcionalidades de recargas con tarjeta de credito para Bolivia
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_convergent_payment_gateway
+  - oneapp_mobile_payment_gateway_topups

@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * @file
+ * Contains oneapp_home_premium_bo.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_help().
+ */
+function oneapp_home_premium_bo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+      // Main module help for the oneapp_home module.
+    case 'help.page.oneapp_home_premium_bo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains features for all oneapp Home Premium BO') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ *
+ * @param [type] $form
+ * @param FormStateInterface $form_state
+ * @return void
+ */
+function oneapp_home_premium_bo_form_oneapp_home_config_alter(&$form, FormStateInterface $form_state) {
+
+  $config = \Drupal::config('oneapp_home.config')->get('premium');
+
+  $form['general']['#weight'] = -1;
+
+  $group = "premium";
+
+  $num_status = !empty($form_state->get('num_status')) ? $form_state->get('num_status') : count($config['behaviour']['codes']);
+  $form_state->set('num_status', $num_status);
+
+  //Estados de visitas.
+  $form[$group]['behaviour'] = [
+    '#type' => 'details',
+    '#title' => t('Mapeo de Comportamiento del api Validations'),
+    '#group' => 'premium',
+    '#open' => TRUE,
+  ];
+  $form[$group]['behaviour']['codes'] = [
+    '#type' => 'table',
+    '#prefix' => '<div id="codes-wrapper">',
+    '#suffix' => '</div>',
+    '#header' => [
+      t('Comportamiento'), t('Código'), t('mensaje'), t('Redirección'), t('Url'), t('Weight'),
+    ],
+    '#empty' => t('No hay mapeo configurados'),
+    '#tabledrag' => [
+      [
+        'action' => 'order',
+        'relationship' => 'sibling',
+        'group' => 'fields-order-weight-fields',
+      ],
+    ],
+  ];
+  $items = isset($config['behaviour']['codes']) ? $config['behaviour']['codes'] : [];
+  uasort($items, [
+    'Drupal\Component\Utility\SortArray',
+    'sortByWeightElement',
+  ]);
+  $items = array_values($items);
+  for ($i=0; $i < $num_status; $i++) {
+    $form[$group]['behaviour']['codes'][$i]['#attributes']['class'][] = 'draggable';
+    $form[$group]['behaviour']['codes'][$i]['behaviour'] = [
+      '#type' => 'select',
+      '#default_value' => isset($items[$i]['behaviour']) ? $items[$i]['behaviour'] : '',
+      '#options' => [
+        'is_valid' => t('Es Valido'),
+        'cant_addons' => t('NO contratar addons'),
+        'empty_card' => t('Mostrar Vacio'),
+        'error_card' => t('Mostrar Error'),
+      ],
+    ];
+    $form[$group]['behaviour']['codes'][$i]['code'] = [
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$i]['code']) ? $items[$i]['code'] : '',
+      '#size' => 5,
+      '#required' => TRUE,
+    ];
+    $form[$group]['behaviour']['codes'][$i]['message'] = [
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$i]['message']) ? $items[$i]['message'] : '',
+      '#size' => 25,
+    ];
+    $form[$group]['behaviour']['codes'][$i]['redirect'] = [
+      '#type' => 'checkbox',
+      '#default_value' => isset($items[$i]['redirect']) ? $items[$i]['redirect'] : '',
+      '#size' => 10,
+    ];
+    $form[$group]['behaviour']['codes'][$i]['url'] = [
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$i]['url']) ? $items[$i]['url'] : '',
+      '#size' => 20,
+    ];
+    $form[$group]['behaviour']['codes'][$i]['weight'] = [
+      '#type' => 'weight',
+      '#title' => t('Weight status'),
+      '#title_display' => 'invisible',
+      '#default_value' => isset($items[$i]['weight']) ? $items[$i]['weight'] : $i,
+      '#attributes' => ['class' => ['fields-order-weight-fields']],
+    ];
+  }
+  $form[$group]['behaviour']['list_add_row'] = [
+    '#type' => 'submit',
+    '#value' => t('Agregar Mapeo'),
+    '#submit' => ['addRowMapping'],
+    '#ajax' => [
+      'callback' => 'rowMappingCallback',
+      'wrapper' => 'codes-wrapper',
+    ]
+  ];
+  $form[$group]['behaviour']['list_remove_row'] = [
+    '#type' => 'submit',
+    '#value' => t('Remover Mapeo'),
+    '#submit' => ['removeRowMapping'],
+    '#ajax' => [
+      'callback' => 'rowMappingCallback',
+      'wrapper' => 'codes-wrapper',
+    ]
+  ];
+  $form['#submit'][] = 'oneapp_home_premium_bo_config_form_submit';
+}
+
+/**
+ * Custom submit config form for save data.
+ */
+function addRowMapping(array &$form, FormStateInterface $form_state) {
+  // Increase by 1 the number of rows.
+  $num_status = $form_state->get('num_status');
+  $num_status++;
+  $form_state->set('num_status', $num_status);
+  // Rebuild form with 1 extra row.
+  $form_state->setRebuild();
+}
+
+/**
+ * Custom submit config form for save data.
+ */
+function removeRowMapping(array &$form, FormStateInterface $form_state) {
+  // Increase by 1 the number of rows.
+  $num_status = $form_state->get('num_status');
+  $num_status--;
+  $form_state->set('num_status', $num_status);
+  // Rebuild form with 1 extra row.
+  $form_state->setRebuild();
+}
+
+function rowMappingCallback(array &$form, FormStateInterface $form_state) {
+  return $form['premium']['behaviour']['codes'];
+}
+
+/**
+ * Custom submit config form for save data.
+ */
+function oneapp_home_premium_bo_config_form_submit($form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('oneapp_home.config')
+    ->set('premium', $form_state->getValue('premium'))
+    ->save();
+}

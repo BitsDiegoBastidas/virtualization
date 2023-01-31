@@ -1,0 +1,8 @@
+name: 'ONEAPP Mobile billing Bo'
+type: module
+description: 'Contains features for all oneapp mobile billing bo'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_mobile

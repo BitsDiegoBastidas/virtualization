@@ -1,0 +1,9 @@
+name: 'ONEAPP Mobile upselling Bo'
+type: module
+description: 'Contains features for all oneapp mobile upselling Bo'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_mobile
+  - oneapp_mobile:oneapp_mobile_upselling

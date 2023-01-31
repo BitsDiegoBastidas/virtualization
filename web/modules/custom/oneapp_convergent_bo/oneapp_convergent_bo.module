@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains oneapp_convergent.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function oneapp_convergent_bo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the oneapp_convergent module.
+    case 'help.page.oneapp_convergent_gt':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains features for all oneapp covergent') . '</p>';
+      return $output;
+
+    default:
+  }
+}

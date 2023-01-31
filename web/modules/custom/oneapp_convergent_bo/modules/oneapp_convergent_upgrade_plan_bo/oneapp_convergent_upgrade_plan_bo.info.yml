@@ -1,0 +1,8 @@
+name: OneApp Convergent Upgrade Plan Bo
+type: module
+description: OneApp Convergent Upgrade Plan cards Bo
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: "OneApp Convergent Bo"
+dependencies:
+  - oneapp:oneapp_convergent_upgrade_plan

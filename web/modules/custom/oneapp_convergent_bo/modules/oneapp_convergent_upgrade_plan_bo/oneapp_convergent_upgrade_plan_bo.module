@@ -1,0 +1,257 @@
+<?php
+
+/**
+ * @file
+ * Contains oneapp_convergent_upgrade_plan_expansion.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+
+/**
+ * Implements hook_help().
+ * @param $route_name
+ * @param RouteMatchInterface $route_match
+ * @return void|string
+ */
+function oneapp_convergent_upgrade_plan_bo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the payment gateway module.
+    case 'help.page.oneapp_convergent_upgrade_plan_expansion':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains features of upgrade plan of Bolivia') . '</p>';
+      return $output;
+    default:
+  }
+}
+
+/**
+ * @param $form
+ * @param FormStateInterface $form_state
+ */
+function _alter_recommended_offers_home(&$form, FormStateInterface $form_state) {
+
+  $settings =& $form['settings']['recommendedOffers'];
+  $settings['fields']['dynamic']['#open'] = FALSE;
+
+  // Filter Actions //
+
+  $values = $form_state->getFormObject()->block->getConfiguration()['recommendedOffers']['actions']['card'] ?? [];
+
+  $action = 'filterPlans';
+  $settings['actions']['card'][$action] = $settings['actions']['card']['recommendedOffersAction'];
+  $settings['actions']['card'][$action]['label']['#title'] = t('Filtrar ofertas/planes');
+  $settings['actions']['card'][$action]['label']['#default_value'] = $values[$action]['label'] ?? 'FILTRAR PLANES';
+  $settings['actions']['card'][$action]['label']['#description'] = '';
+  $settings['actions']['card'][$action]['url']['oneapp']['#default_value'] = $values[$action]['url']['oneapp'] ?? '';
+  $settings['actions']['card'][$action]['url']['selfcare']['#default_value'] = $values[$action]['url']['selfcare'] ?? '';
+  $settings['actions']['card'][$action]['type']['#default_value'] = $values[$action]['type'] ?? 'link';
+  $settings['actions']['card'][$action]['show']['#default_value'] = $values[$action]['show'] ?? 1;
+
+  $action = 'showPlans';
+  $settings['actions']['card'][$action] = $settings['actions']['card']['recommendedOffersAction'];
+  $settings['actions']['card'][$action]['label']['#title'] = t('Mostrar ofertas/planes');
+  $settings['actions']['card'][$action]['label']['#default_value'] = $values[$action]['label'] ?? 'VER PLANES';
+  $settings['actions']['card'][$action]['label']['#description'] = '';
+  $settings['actions']['card'][$action]['url']['oneapp']['#default_value'] = $values[$action]['url']['oneapp'] ?? '';
+  $settings['actions']['card'][$action]['url']['selfcare']['#default_value'] = $values[$action]['url']['selfcare'] ?? '';
+  $settings['actions']['card'][$action]['type']['#default_value'] = $values[$action]['type'] ?? 'link';
+  $settings['actions']['card'][$action]['show']['#default_value'] = $values[$action]['show'] ?? 1;
+
+  // Filter Form //
+
+  $values = $form_state->getFormObject()->block->getConfiguration()['recommendedOffers']['forms']['plansFilter'] ?? [];
+
+  $settings['forms'] = [
+    '#type' => 'details',
+    '#title' => t('Filtro Ofertas/Planes Recomendados'),
+    '#open' => FALSE,
+  ];
+  $settings['forms']['plansFilter'] = [
+    '#type' => 'table',
+    '#header' => [
+      'field' => t('Field'),
+      'label' => t('Label'),
+      'type' => t('Type'),
+      'value' => t('Default value'),
+      'show' => t('Show'),
+    ],
+  ];
+  $field = 'title';
+  $settings['forms']['plansFilter'][$field] = [
+    'field' => [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => t('Título'),
+    ],
+    'label' => [],
+    'type' => [],
+    'value' => [
+      '#type' => 'textfield',
+      '#default_value' => $values[$field]['value'] ?? t('¿Qué te interesa en tu plan?'),
+    ],
+    'show' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['show'] ?? 1,
+    ],
+  ];
+  $field = 'increaseSpeed';
+  $settings['forms']['plansFilter'][$field] = [
+    'field' => [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => t('Aumentar velocidad'),
+    ],
+    'label' => [
+      '#type' => 'textfield',
+      '#default_value' => 'Aumenta tu velocidad',
+    ],
+    'type' => [
+      '#type' => 'textfield',
+      '#attributes' => ['readonly' => TRUE],
+      '#default_value' => 'checkbox',
+    ],
+    'defaultValue' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['defaultValue'] ?? 0,
+    ],
+    'show' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['show'] ?? 1,
+    ],
+  ];
+
+  $field = 'increaseChannels';
+  $settings['forms']['plansFilter'][$field] = [
+    'field' => [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => t('Agregar canales de tv'),
+    ],
+    'label' => [
+      '#type' => 'textfield',
+      '#default_value' => 'Agregar canales a mi tv',
+    ],
+    'type' => [
+      '#type' => 'textfield',
+      '#attributes' => ['readonly' => TRUE],
+      '#default_value' => 'checkbox',
+    ],
+    'defaultValue' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['defaultValue'] ?? 0,
+    ],
+    'show' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['show'] ?? 1,
+    ],
+  ];
+
+  $field = 'increaseBoxes';
+  $settings['forms']['plansFilter'][$field] = [
+    'field' => [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => t('Aumentar decodificadores'),
+    ],
+    'label' => [
+      '#type' => 'textfield',
+      '#default_value' => 'Agregar cajas a mi plan',
+    ],
+    'type' => [
+      '#type' => 'textfield',
+      '#attributes' => ['readonly' => TRUE],
+      '#default_value' => 'checkbox',
+    ],
+    'defaultValue' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['defaultValue'] ?? 0,
+    ],
+    'show' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['show'] ?? 1,
+    ],
+  ];
+
+  $field = 'boxesNumber';
+  $settings['forms']['plansFilter'][$field] = [
+    'field' => [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => t('Número de cajas'),
+    ],
+    'label' => [
+      '#type' => 'textfield',
+      '#default_value' => '',
+    ],
+    'type' => [
+      '#type' => 'textfield',
+      '#attributes' => ['readonly' => TRUE],
+      '#default_value' => 'number',
+    ],
+    'defaultValue' => [
+      '#type' => 'textfield',
+      '#default_value' => $values[$field]['defaultValue'] ?? 0,
+    ],
+    'show' => [
+      '#type' => 'checkbox',
+      '#default_value' => $values[$field]['show'] ?? 1,
+    ],
+  ];
+
+  array_unshift($form['actions']['submit']['#submit'], '_submit_recommended_offers_home');
+}
+
+/**
+ * This method processes and saves data
+ * @param $form
+ * @param FormStateInterface $form_state
+ */
+function _submit_recommended_offers_home(&$form, FormStateInterface $form_state) {
+  $settings = $form_state->getValue(['settings', 'recommendedOffers', 'forms', 'plansFilter']);
+  if (!empty($settings)) {
+    array_walk($settings, function (&$val, $field_name) {
+      $val['show'] = boolval($val['show']);
+      if ($field_name !== 'title') {
+        $val['format'] = '';
+        $val['placeholder'] = '';
+        $val['validations'] = ['required' => FALSE];
+      }
+    });
+    $form_state->setValue(['settings', 'recommendedOffers', 'forms', 'plansFilter'], $settings);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function oneapp_convergent_upgrade_plan_form_adf_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if (isset($form['settings']['recommendedOffers'])) {
+    _alter_recommended_offers_home($form, $form_state);
+  }
+}
+
+/**
+ * @param array $definitions
+ */
+function oneapp_convergent_upgrade_plan_bo_block_alter(array &$definitions) {
+
+  $definitions['oneapp_convergent_upgrade_plan_v2_0_upgrade_block']['admin_label'] = t('Oneapp Convergent Upgrade Plan Home v2.0 - (Mejora tu plan)');
+  $definitions['oneapp_convergent_upgrade_plan_v2_0_upgrade_block']['class'] =
+    '\Drupal\oneapp_convergent_upgrade_plan_bo\Plugin\Block\v2_0\UpgradeBoBlock';
+}
+
+/**
+ * Implements hook_cron().
+ */
+function oneapp_convergent_upgrade_plan_bo_cron() {
+  $service = \Drupal::service('oneapp_convergent_upgrade_plan.v2_0.plan_send_rest_logic');
+  $service->processPendingScheduleUpgrades();
+}

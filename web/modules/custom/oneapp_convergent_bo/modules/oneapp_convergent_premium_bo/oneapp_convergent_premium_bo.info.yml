@@ -1,0 +1,12 @@
+name: "OneApp Convergent Premium Bo"
+type: module
+description: "Contains features for Bo oneapp covergent premium"
+package: "OneApp Convergent"
+core: 8.x
+core_version_requirement: ^8 || ^9
+version: "8.x-1.0"
+dependencies:
+  - oneapp:oneapp
+  - oneapp:oneapp_rest
+  - oneapp:oneapp_endpoints
+  - oneapp:adf_block_config

@@ -1,0 +1,8 @@
+name: OneApp Convergent Symphonica external Bo
+type: module
+description: Modulo OneApp Convergente para la integración con la api de symphonica
+package: "OneApp Convergent"
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - oneapp_convergent

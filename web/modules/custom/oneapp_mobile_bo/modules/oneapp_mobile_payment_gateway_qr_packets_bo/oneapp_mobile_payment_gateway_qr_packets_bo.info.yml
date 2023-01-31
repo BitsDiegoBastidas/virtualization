@@ -1,0 +1,13 @@
+name: "Oneapp Mobile Payment Gateway Qr Packets Bo"
+type: module
+description: "Payment Gateway Mobile Packets purchase for Bo"
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+
+configure: oneapp.settings.config.mobile.payment_gateway.pakects
+
+dependencies:
+  - oneapp_mobile_payment_gateway_qr_packets
+
+

@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Contains billing.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function oneapp_mobile_upselling_bo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the upselling module.
+    case 'help.page.loan_bo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains features for all oneapp mobile loan bo') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+function oneapp_mobile_upselling_bo_form_oneapp_mobile_config_alter(&$form, FormStateInterface $form_state) {
+
+  $config = \Drupal::config('oneapp_mobile.config');
+
+  $form['general']['#weight'] = -1;
+
+  $group = "cardPayment_from";
+
+  $form[$group]['activate_nbo_endpoint'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Utilizar endpoint independiente para consumir ofertas nbo'),
+    '#default_value' => isset($config->get($group)['activate_nbo_endpoint']) ? $config->get($group)['activate_nbo_endpoint'] : FALSE,
+  ];
+
+  $form['actions']['submit']['#submit'][] = 'oneapp_mobile_upselling_bo_config_form_submit';
+}
+
+/**
+ * Custom submit config form for save data.
+ */
+function oneapp_mobile_upselling_bo_config_form_submit($form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('oneapp_mobile.config')
+    ->set('cardPayment_from', $form_state->getValue('cardPayment_from'))
+    ->save();
+}
+
+/**
+ * Implements hook_block_alter().
+ */
+function oneapp_mobile_upselling_bo_block_alter(array &$definitions) {
+
+  $definitions['oneapp_mobile_upselling_v2_0_packets_order_details_block']['class'] =
+    'Drupal\oneapp_mobile_upselling_bo\Plugin\Block\v2_0\PacketsOrderDetailsBoBlock';
+
+  $definitions['oneapp_mobile_upselling_v2_0_recharge_order_details_block']['class'] =
+    'Drupal\oneapp_mobile_upselling_bo\Plugin\Block\v2_0\RechargeOrderDetailsBoBlock';
+
+  $definitions['oneapp_mobile_upselling_v2_0_available_offers_block']['class'] =
+    'Drupal\oneapp_mobile_upselling_bo\Plugin\Block\v2_0\AvailableOffersBoBlock';
+
+  $definitions['oneapp_mobile_upselling_v2_0_voice_balance_block']['class'] =
+    'Drupal\oneapp_mobile_upselling_bo\Plugin\Block\v2_0\VoiceBalanceBoBlock';
+
+}
+
+/**
+ * Implements hook_endpoint_alter().
+ */
+function oneapp_mobile_upselling_bo_endpoint_alter(array &$definitions) {
+  // Redefine available offers url endpoint.
+  $definitions['oneapp_mobile_upselling_v2_0_available_offers_endpoint']['defaults']['endpoint'] =
+    'https://[endpoint:environment_prefix].api.tigo.com/v1/tigo/mobile/[endpoint:country_iso]/vas/subscribers/[endpoint:prefix_country]{msisdn}/products';
+
+  $definitions['oneapp_mobile_upselling_v2_0_acquired_offers_endpoint']['defaults']['endpoint'] =
+    'https://[endpoint:environment_prefix].api.tigo.com/v1/tigo/mobile/[endpoint:country_iso]/vas/subscribers/{msisdn}/products/{packageId}';
+
+  $definitions['oneapp_mobile_billing_v2_0_invoices_endpoint']['defaults']['endpoint'] =
+    'https://[endpoint:environment_prefix].api.tigo.com/v3/tigo/mobile/[endpoint:country_iso]/billing/subscribers/{id}/invoices/';
+}

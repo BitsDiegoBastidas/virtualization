@@ -1,0 +1,8 @@
+name: Oneapp Mobile Payment Gateway Auto Packets Bo
+type: module
+description: Modulo Oneapp Mobile Payment Gateway Auto Packets Bo
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_mobile_payment_gateway_autopackets

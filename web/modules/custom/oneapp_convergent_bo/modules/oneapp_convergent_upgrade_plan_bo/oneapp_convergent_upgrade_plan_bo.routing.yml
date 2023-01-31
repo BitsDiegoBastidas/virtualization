@@ -1,0 +1,36 @@
+oneapp.settings.config.convergent.upgrade_plan_log_index:
+  path: '/admin/reports/upgrade_plan_log'
+  defaults:
+    _controller: '\Drupal\oneapp_convergent_upgrade_plan_bo\Controller\UpgradePlanLogBoController::renderUpgradePlanLogBoTable'
+    _title: 'Upgrade Plan Log Table'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+oneapp.settings.config.convergent.upgrade_plan_log_export:
+  path: '/admin/reports/upgrade_plan_log/export'
+  defaults:
+    _controller: '\Drupal\oneapp_convergent_upgrade_plan_bo\Controller\UpgradePlanLogBoController::exportUpgradePlanLogBoTable'
+    _title: 'Upgrade Plan Log Table'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+oneapp.settings.config.convergent.upgrade_plan_log_build:
+  path: '/admin/reports/upgrade_plan_log/build'
+  defaults:
+    _controller: '\Drupal\oneapp_convergent_upgrade_plan_bo\Controller\UpgradePlanLogBoController::buildUpgradePlanLogBoTable'
+    _title: 'Build Upgrade Plan Log Table'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+oneapp.settings.config.convergent.upgrade_plan_log_schedule_pending_visits:
+  path: '/admin/reports/upgrade_plan_log/schedule_pending_visits'
+  defaults:
+    _controller: '\Drupal\oneapp_convergent_upgrade_plan_bo\Controller\UpgradePlanLogBoController::schedulePendingVisits'
+    _title: 'Schedule Pending Visits'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,9 @@
+name: 'ONEAPP mobile Premium Bo'
+type: module
+description: 'Contains features for all oneapp mobile premium bo'
+core: '8.x'
+core_version_requirement: ^8 || ^9
+package: "OneApp Mobile BO"
+dependencies:
+  - oneapp_mobile
+  - oneapp_mobile:oneapp_mobile_premium

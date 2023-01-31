@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * Implements hook_schema
+ * @return mixed
+ */
+function oneapp_convergent_upgrade_plan_bo_schema() {
+  $schema['oneapp_convergent_upgrade_plan_bo_log'] = [
+    'description' => 'Stores upgrade plan logs',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'size' => 'medium',
+      ],
+      'client_name' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => 'Full name of the client'
+      ],
+      'service_number' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => 'Service line number'
+      ],
+      'id_plan' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => 'Identificador del plan',
+      ],
+      'name_plan' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => 'Nombre del plan',
+      ],
+      'data' => [
+        'type' => 'text',
+        'size' => 'normal',
+        'description' => '',
+      ],
+      'contract_id' => [
+         'type' => 'varchar',
+         'length' => 25,
+         'description' => '',
+      ],
+      'order_id' => [
+        'type' => 'varchar',
+        'length' => 25,
+         'description' => '',
+      ],
+     'order_status' => [
+       'type' => 'varchar',
+       'length' => 100,
+       'description' => '',
+      ],
+      'ticket_zendesk' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => '',
+      ],
+      'id_ticket_zendesk' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'description' => '',
+      ],
+     'date_visit' => [
+       'type' => 'varchar',
+       'length' => 19,
+       'mysql_type' => 'datetime',
+       'description' => 'Fecha de transacción',
+      ],
+     'upgrade_status' => [
+       'type' => 'varchar',
+       'length' => 100,
+       'description' => '',
+      ],
+      'date' => [
+        'type' => 'varchar',
+        'length' => 19,
+        'mysql_type' => 'datetime',
+        'description' => 'Fecha de transacción',
+      ],
+      'business_unit' => [
+        'type' => 'varchar',
+        'length' => 10,
+        'description' => 'Unidad de negocio (HOME, MOBILE)',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [],
+    'foreign keys' => [],
+  ];
+  return $schema;
+}
