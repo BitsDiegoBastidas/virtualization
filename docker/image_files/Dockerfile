@@ -6,8 +6,6 @@ COPY nginx.repo /etc/yum.repos.d/
 RUN yum -y update && yum -y install nginx && yum -y install initscripts
 COPY default.conf /etc/nginx/conf.d/
 # INSTALL AND CONFIGURE PHP
-RUN echo "Install PHP VERSION: ${PHP_VERSION}"
-RUN echo "Install DRUSH VERSION: ${PHP_VERSION}"
 RUN yum install gcc-c++ zlib-devel amazon-linux-extras -y
 RUN amazon-linux-extras enable ${PHP_VERSION} && amazon-linux-extras install ${PHP_VERSION} -y
 RUN yum -y install php php-cli php-json php-xml php-opcache php-fpm php-intl php-mbstring gd gd-devel php-gd php-zip wget unzip
