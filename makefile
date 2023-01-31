@@ -8,7 +8,7 @@ endif
 vagrant.start: vagrant.init execute.composer config.database create.database import.database execute.shells
 	cd ./virtualization/vagrant && vagrant ssh
 vagrant.init:
-	cd ./virtualization/vagrant && PHP_VERSION=$(PHP_VERSION) vagrant up
+	cd ./virtualization/vagrant && PHP_VERSION=$(PHP_VERSION) DRUSH_VERSION=$(DRUSH_VERSION) vagrant up
 execute.composer:
 	@echo "======DELETE COMPOSER.LOCK==========="
 	cd ./virtualization/vagrant && vagrant ssh -- "cd $(SERVER_DIR) && rm -rf composer.lock"
@@ -43,7 +43,7 @@ render.assets:
 
 
 vagrant.destroy:
-	cd ./virtualization/vagrant && vagrant halt && vagrant destroy
+	cd ./virtualization/vagrant && vagrant halt && PHP_VERSION=$(PHP_VERSION) DRUSH_VERSION=$(DRUSH_VERSION) vagrant destroy -f
 
 vagrant.up:
 	cd ./virtualization/vagrant && vagrant up

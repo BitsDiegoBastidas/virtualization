@@ -1,6 +1,7 @@
 sudo su
 echo "=========================="
 echo "PHP VERSION: $1"
+echo "DRUSH VERSION: $2"
 echo "=========================="
 # INSTALL AND CONFIGURE NGINX
 cp /usr/share/nginx/html/virtualization/vagrant/box_files/nginx.repo /etc/yum.repos.d/
@@ -30,7 +31,7 @@ curl -sS https://getcomposer.org/installer | php\
 && mv composer.phar /usr/local/bin/composer \
 && ln -s /usr/local/bin/composer /usr/bin/composer  \
 && git clone https://github.com/drush-ops/drush.git /usr/local/src/drush \
-&& cd /usr/local/src/drush && git checkout 9.x  \
+&& cd /usr/local/src/drush && git checkout $2  \
 && ln -s /usr/local/src/drush/drush /usr/bin/drush
 cd /usr/local/src/drush && composer install
 
