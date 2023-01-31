@@ -1,5 +1,10 @@
 SERVER_DIR=/usr/share/nginx/html
-
+ifeq ($(DRUSH_VERSION),)
+DRUSH_VERSION := 9.x
+endif
+ifeq ($(PHP_VERSION=),)
+PHP_VERSION= := php7.4
+endif
 vagrant.start: vagrant.init execute.composer config.database create.database import.database execute.shells
 	cd ./virtualization/vagrant && vagrant ssh
 vagrant.init:
