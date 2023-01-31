@@ -25,6 +25,7 @@ services:
       context: ./image_files/
       args:
         - PHP_VERSION
+        - DRUSH_VERSION
     privileged: true
     working_dir: /usr/share/nginx/html
     ports:

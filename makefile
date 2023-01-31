@@ -55,7 +55,7 @@ docker.start: docker.init docker.composer docker.database docker.shells docker.r
 	cd ./virtualization/docker && docker exec -it oneapp_bo_project bash
 docker.init:
 	docker builder prune -f
-	cd ./virtualization/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)"
+	cd ./virtualization/docker && docker compose build --build-arg PHP_VERSION="$(PHP_VERSION)" --build-arg DRUSH_VERSION="$(DRUSH_VERSION)"
 	cd ./virtualization/docker && docker compose up -d
 docker.composer:
 	docker exec -it oneapp_bo_project rm -rf composer.lock
