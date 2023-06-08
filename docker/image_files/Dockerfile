@@ -1,4 +1,4 @@
-FROM amazonlinux:latest
+FROM amazonlinux:2
 ARG PHP_VERSION
 ARG DRUSH_VERSION
 # Install and configure Nginx
